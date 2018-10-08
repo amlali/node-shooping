@@ -29,17 +29,26 @@ module.exports={
     }
     else{
         var user=new User();
-        User.findOne({email:req.body.email}).exec(function(err,result){
+        User.findOne({email:req.body.email}).then((result)=>{
+
+        if(result)
+        {
            user.email=result.email;
            user.password=result.password;
             if(user.isValidPassword(req.body.password)){
              return res.status(200).send(user);
             }
             else{
-                return res.status(400).send('not valid');
+                return res.status(400).send('inValid Password');
     
             }
-          
+        } 
+        else{
+            return res.status(400).send("This Email Doesn't Exists");
+        }
+
+        }).catch((err)=>{
+            return res.status(404).send(err);
         });
     
     }}}}
