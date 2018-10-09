@@ -32,7 +32,8 @@ else{
     console.log('valid wallahy');
     
     User.findOne({email:req.body.email}).then((result)=>{
-        
+        console.log("result",result);
+
         if(!result)
         {
             
@@ -48,7 +49,7 @@ else{
             var token= user.generateToken(user._id);
             if(token){
                 res.setHeader('auth',token);
-                return res.status(200).send(token);   
+                return res.status(200).send();   
             }
             else{
                 return res.status(400).send('this Email Exists');
