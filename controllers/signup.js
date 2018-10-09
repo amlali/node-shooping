@@ -1,5 +1,6 @@
 var User=require('./../model/user');
 const uCheck=require('ucheck');
+const ObjectID=require('mongodb').ObjectID
 module.exports={
 signUp:function(){
 return function(req,res,next){
@@ -36,7 +37,6 @@ else{
         {
             
             var newUser={
-                
                 email:req.body.email,
                 password:req.body.password
                 
@@ -44,11 +44,19 @@ else{
             console.log('not Exist Email before add user ')
             user.addUser(newUser);
             user.save();
-            return  res.status(200).send();
+
+            var token= user.generateToken(user._id);
+            if(token){
+                res.setHeader('auth',token);
+                return res.status(200).send(token);   
+            }
+            else{
+                return res.status(400).send('this Email Exists');
+            }
+         
+            
         }
-        else{
-            return res.status(400).send('this Email Exists');
-        }
+        
 
     }).catch((e)=>{
         console.log(e);

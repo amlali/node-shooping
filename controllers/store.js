@@ -18,7 +18,6 @@ ShoppingList.findOne({email:req.body.email}).then((result)=>{
                  var tempList=[];
                  (result.list).forEach(element => {
                    var elem={
-                     //  _id:new ObjectID(),
                        name:element.name,
                        amount:element.amount
 
@@ -26,10 +25,10 @@ ShoppingList.findOne({email:req.body.email}).then((result)=>{
                    tempList.push(elem);
                    
                });
+            
 
                (req.body.list).forEach(element => {
                 var elem={
-                 //   _id:new ObjectID(),
                     name:element.name,
                     amount:element.amount
 
@@ -41,9 +40,11 @@ ShoppingList.findOne({email:req.body.email}).then((result)=>{
                  console.log("inside update");
                  console.log(tempList);
                  
-                 ShoppingList.deleteOne({email:req.body.email});
-             shoppingList.dataForUser(req.body.email,tempList);
-              shoppingList.save();
+              ShoppingList.findOneAndRemove({email:req.body.email}).then(()=>{
+                shoppingList.dataForUser(req.body.email,tempList);
+                shoppingList.save();
+              });
+             
                 // ShoppingList.findOneAndUpdate({email:req.body.email},{email:req.body.email,list:tempList});
 
                  return  res.status(200).send();

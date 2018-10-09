@@ -36,7 +36,12 @@ module.exports={
            user.email=result.email;
            user.password=result.password;
             if(user.isValidPassword(req.body.password)){
-             return res.status(200).send(user);
+            var token= user.generateToken(result._id);
+            if(token){
+                res.setHeader('auth',token);
+                return res.status(200).send(token);   
+            }
+             
             }
             else{
                 return res.status(400).send('inValid Password');
