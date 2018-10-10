@@ -35,7 +35,7 @@ console.log(decoded.expireDate);
             
             User.findById(decoded._id).then((user)=>{
                 if(user){
-                    console.log(' valid');
+                    console.log('valid');
                 
                     return  res.status(200).send();
                 }
@@ -53,7 +53,7 @@ console.log(decoded.expireDate);
 }
 }
 catch(e){
-    return  res.status(404).send(e);
+    return  res.status(401).send(e);
 
 }
 
