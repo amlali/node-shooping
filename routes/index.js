@@ -3,12 +3,12 @@
  var signin  = require('./route/singin');
  var load  = require('./route/load');
  var store  = require('./route/store');
- var access  = require('./route/access');
+ var access  = require('./../controllers/access');
 
 module.exports = function (app) {
 
     //routes that with no namespace 
-    app.use( access);
+  //  app.use( access);
 	app.use( signup);
     app.use( signin);
     app.use( load);

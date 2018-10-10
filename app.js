@@ -6,6 +6,8 @@ var cors = require('cors')
 
 app.use(cors());
 app.use(bodyParser.json());
+var access  = require('./controllers/access');
+//app.use(access.access);
 require('./routes')(app);
 var port=3000||process.env.PORT;
 

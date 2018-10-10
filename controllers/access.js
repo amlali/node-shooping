@@ -3,62 +3,43 @@ var User=require('./../model/user');
 var jwt = require('jsonwebtoken');
 
 module.exports={
-access:function(){
-return function(req,res,next){
-
+access: function(req,res,next){
 
     var token=req.headers['auth'];
+
+    console.log("incoming token in heade r======> ")
     console.log(token);
     
     if(!token){
         console.log("token",token);
         
-   return res.status(401).send();
-}
-//  var valid= user.verifyToken(token);
-//  console.log(valid);
+   return res.status(401).send("noToken");
+    }
+
  
-var decoded;
+        var decoded;
 
-    try{
-        console.log("inside try");
-        
-        decoded = jwt.verify(token,'amal1234');
-        console.log("token",decoded);
-        
-console.log(decoded.expireDate);
-
-        if(decoded.expireDate>date.getDate())
-        {  
-            console.log(decoded);
-            console.log('true');
-            
-            User.findById(decoded._id).then((user)=>{
-                if(user){
-                    console.log('valid');
+            try{
+                console.log("inside try");
                 
-                    return  res.status(200).send();
-                }
-                else{
-                    console.log('not valid');
-                    
-                    return res.status(401).send();
-                }
+                decoded = jwt.verify(token,'amal1234');
+                console.log("token",decoded);
+       
+                if(decoded.expireDate>date.getDate())
+                {  
+                    console.log(decoded);
+                    res.status(200).send();
+                        next();   
+                    }
+        
+            }
+    catch(e){
+        return  res.status(401).send(e);
+    }
 
-            }).catch(()=>{
-             return res.status(401).send("not valid token");
 
-            })
- 
+
+
+
+  }
 }
-}
-catch(e){
-    return  res.status(401).send(e);
-
-}
-
-
-
-
-
-}}}

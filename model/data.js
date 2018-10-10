@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
- 
+var ObjectID = require('mongodb').ObjectID;
+
 var option={
     useNewUrlParser: true
 };
@@ -9,10 +10,7 @@ console.log('inside user model');
 const Schema = mongoose.Schema;
 var ShoppingList=new Schema({
    
-    email:{
-        type:String,
-        required:true
-    },
+    _id:{},
    list:[
        {
        name:{
@@ -26,9 +24,9 @@ var ShoppingList=new Schema({
    }]
 
 });
-ShoppingList.methods.dataForUser=function(email,list){
-    console.log('inside user creation methods.. trying to add obj = >  ' , JSON.stringify({email,list}));
-    this.email=email;
+ShoppingList.methods.dataForUser=function(_id,list){
+    console.log('inside user creation methods.. trying to add obj = >  ' , JSON.stringify({_id,list}));
+    this._id=_id;
     this.list=list;
     
 }

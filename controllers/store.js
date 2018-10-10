@@ -1,15 +1,30 @@
 var ShoppingList=require('./../model/data');
 var ObjectID = require('mongodb').ObjectID;
+var jwt = require('jsonwebtoken');
 module.exports={
 Store:function(){
 return function(req,res,next){
 
 var shoppingList=new ShoppingList();
-ShoppingList.findOne({email:req.body.email}).then((result)=>{
+var token=req.headers['auth'];
+var decoded;
+
+try{
+    console.log("inside try store");
+    console.log("token stor",token);
+    
+    decoded = jwt.verify(token,'amal1234');
+    console.log("token store:-------",decoded);
+
+ShoppingList.findOne({_id:decoded._id}).then((result)=>{
+    console.log('=========================>',result);
+
              if(!result){
+                 console.log('=========================>',result);
                  
-                 shoppingList.dataForUser(req.body.email,req.body.list);
+                 shoppingList.dataForUser(decoded._id,req.body.list);
                  shoppingList.save();
+                 console.log('=========================>',shoppingList);
 
                  return  res.status(200).send();
 
@@ -40,8 +55,8 @@ ShoppingList.findOne({email:req.body.email}).then((result)=>{
                  console.log("inside update");
                  console.log(tempList);
                  
-              ShoppingList.findOneAndRemove({email:req.body.email}).then(()=>{
-                shoppingList.dataForUser(req.body.email,tempList);
+              ShoppingList.findOneAndRemove({_id:decoded._id}).then(()=>{
+                shoppingList.dataForUser(decoded._id,tempList);
                 shoppingList.save();
               });
              
@@ -60,9 +75,10 @@ ShoppingList.findOne({email:req.body.email}).then((result)=>{
     
     return res.status(404).send(error)
 });
-
-
-
+}
+catch(e){
+    return  res.status(401).send(e);
+}
 
 
 }}}

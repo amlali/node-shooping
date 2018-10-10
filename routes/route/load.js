@@ -1,5 +1,6 @@
 var Router = require('express').Router();
 var accessContr=require('./../../controllers/load');
-Router.route('/load').post(accessContr.Load());
+var access=require('./../../controllers/access');
+Router.route('/load').post(access.access,accessContr.Load());
 
 module.exports = Router;
