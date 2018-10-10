@@ -13,7 +13,7 @@ return function(req,res,next){
     if(!token){
         console.log("token",token);
         
-   return res.status(404).send();
+   return res.status(401).send();
 }
 //  var valid= user.verifyToken(token);
 //  console.log(valid);
@@ -42,11 +42,11 @@ console.log(decoded.expireDate);
                 else{
                     console.log('not valid');
                     
-                    return res.status(400).send();
+                    return res.status(401).send();
                 }
 
             }).catch(()=>{
-             return res.status(400).send("not valid token");
+             return res.status(401).send("not valid token");
 
             })
  

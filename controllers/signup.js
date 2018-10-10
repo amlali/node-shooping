@@ -45,11 +45,10 @@ else{
             console.log('not Exist Email before add user ')
             user.addUser(newUser);
             user.save();
-
             var token= user.generateToken(user._id);
             if(token){
                 res.setHeader('auth',token);
-                return res.status(200).send();   
+                return res.status(200).send(JSON.stringify(token));   
             }
             else{
                 return res.status(400).send('this Email Exists');

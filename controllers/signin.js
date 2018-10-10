@@ -39,7 +39,7 @@ module.exports={
             var token= user.generateToken(result._id);
             if(token){
                 res.setHeader('auth',token);
-                return res.status(200).send();   
+                return res.status(200).send(JSON.stringify(token));   
             }
              
             }
