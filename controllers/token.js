@@ -28,12 +28,16 @@ access: function(req,res,next){
                 if(decoded.expireDate>date.getDate())
                 {  
                     console.log(decoded);
-                    res.status(200).send();
+                     res.status(200).send();
                         next();   
-                    }
+             }
+             else{
+                return  res.status(401).send();
+             }
         
             }
     catch(e){
+        
         return  res.status(401).send(e);
     }
 

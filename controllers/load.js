@@ -1,6 +1,5 @@
 var ShoppingList=require('./../model/data');
 var jwt = require('jsonwebtoken');
-var ObjectID = require('mongodb').ObjectID;
 
 module.exports={
 Load:function(){
@@ -12,11 +11,13 @@ return function(req,res,next){
     
     var decoded;
     
-    try{
+    try{                        
         console.log("inside try load");
         
         decoded = jwt.verify(token,'amal1234');
 ShoppingList.findById(decoded._id).then((result)=>{
+    console.log('result------------>',result);
+    
     var tempList=[];
     (result.list).forEach(element => {
       var elem={
@@ -28,16 +29,20 @@ ShoppingList.findById(decoded._id).then((result)=>{
       
   });
   console.log(tempList);
-console.log("=============================in side load",JSON.stringify(tempList));
+  console.log("=============================in side load",tempList);
 
-    return res.status(200).send(JSON.stringify(tempList));
+    return res.status(200).send(tempList);
 
 }).catch((error)=>{
+    console.log('==================>catch',error);
+    
     return res.status(404).send(error)
 });
 
     }
 catch(e){
+    console.log('==================>',e);
+
     return res.status(404).send(e)
 
 }
